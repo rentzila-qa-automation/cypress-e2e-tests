@@ -33,3 +33,5 @@ _To be added once the Cypress project is set up._
 ## Team
 
 - Bohdan — [@havrybo](https://github.com/havrybo)
+
+## -- ##
