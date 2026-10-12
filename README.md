@@ -1,6 +1,6 @@
 # Rentzila Cypress E2E Tests
 
-End-to-end test automation for [Rentzila](https://rentzila.com.ua/) built with Cypress.
+End-to-end test automation for [Rentzila](https://dev.rentzilla.com.ua/) built with Cypress.
 Team project of the Luxe Quality trainee program.
 
 ## Tech stack
