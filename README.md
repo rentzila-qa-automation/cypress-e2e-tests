@@ -5,14 +5,21 @@ Team project of the Luxe Quality trainee program.
 
 ## Tech stack
 
-- Cypress
+- [Cypress](https://www.cypress.io/)
 - TypeScript
-- @faker-js/faker for test data
+- Node.js
+- [@faker-js/faker](https://fakerjs.dev/) for test data
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS version)
+- npm (comes with Node.js)
+- Git
 
 ## Getting started
 
 ```bash
-git clone https://github.com/<your-username>/cypress-e2e-tests.git
+git clone https://github.com/rentzila-qa-automation/cypress-e2e-tests.git
 cd cypress-e2e-tests
 npm install
 cp cypress.env.example.json cypress.env.json   # then fill in test accounts
@@ -98,8 +105,9 @@ Example spec with all conventions: `cypress/e2e/auth/login-validation.cy.ts`
 ## Workflow
 
 - The `main` branch is protected: direct pushes are not allowed.
+- Create a separate branch for each task.
 - Branch naming: `<your-name>/<group>-<short-name>`, for example `hryhorii/auth-login-tests`.
-- When your work is ready, open a Pull Request to `main` and fill in the PR template.
+- When your work is ready, open a Pull Request to `main` and fill in the PR template (description + link to the task).
 - Every Pull Request needs at least **1 approval** from a teammate before merging.
 - If new commits are pushed after approval, the approval is dismissed and a new review is required.
 
