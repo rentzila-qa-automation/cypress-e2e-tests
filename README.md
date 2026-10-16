@@ -12,7 +12,7 @@ Team project of the Luxe Quality trainee program.
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) (LTS version)
+- [Node.js](https://nodejs.org/) 22 LTS (version is pinned in `.nvmrc`, run `nvm use`)
 - npm (comes with Node.js)
 - Git
 
@@ -71,7 +71,8 @@ cypress/
     auth/  main-page/  create-unit/  my-units/
     map-search/  tenders/  profile/  admin/
   pages/               page objects
-    BasePage.ts        shared actions (open, click, fill, verifyUrl)
+    BasePage.ts        shared actions (open, verifyUrl)
+    fillInput.ts       the one way to fill an input (clear + type, { log: false } for secrets)
     components/        parts used on many pages (Header, AuthPopup, Footer)
   fixtures/            static test data
   support/

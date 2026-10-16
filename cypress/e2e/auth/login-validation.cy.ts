@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import HomePage from '../../pages/HomePage';
 import Header from '../../pages/components/Header';
+import { LOGIN_API } from '../../support/constants';
 import AuthPopup, { AUTH_MESSAGES, ERROR_INPUT_CLASS } from '../../pages/components/AuthPopup';
 
 // Example spec for the team: shows the conventions from README.
@@ -21,7 +22,7 @@ describe('Login validation', () => {
   });
 
   it('shows an error for a non-existent account', () => {
-    cy.intercept('POST', '/api/auth/jwt/create/').as('login');
+    cy.intercept('POST', LOGIN_API).as('login');
     AuthPopup.login(faker.internet.email(), faker.internet.password({ length: 10 }));
     cy.wait('@login').its('response.statusCode').should('eq', 400);
     AuthPopup.getFormError().should('have.text', AUTH_MESSAGES.invalidCredentials);

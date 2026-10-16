@@ -1,3 +1,5 @@
+import { fillInput } from '../fillInput';
+
 // Login / registration popup. Collected from dev.rentzilla.com.ua.
 export const AUTH_MESSAGES = {
   required: 'Поле не може бути порожнім',
@@ -19,7 +21,6 @@ const SEL = {
   submitButton: '[data-testid="loginPopup"] button[type="submit"]',
   googleButton: '[class*="AuthorizationGoogle_button"]',
   switcher: '[data-testid="switcher"]',
-  forgotPassword: '[class*="LoginForm_link"]',
   agreementCheckbox: '#registration',
   fieldError: '[class*="CustomReactHookInput_error_message"]',
   formError: '[data-testid="errorMessage"]',
@@ -65,18 +66,15 @@ class AuthPopup {
   }
 
   fillLogin(value: string): void {
-    this.getLoginInput().clear();
-    if (value) this.getLoginInput().type(value);
+    fillInput(SEL.loginInput, value);
   }
 
   fillRegistrationEmail(value: string): void {
-    this.getRegistrationEmailInput().clear();
-    if (value) this.getRegistrationEmailInput().type(value);
+    fillInput(SEL.registrationEmailInput, value);
   }
 
   fillPassword(value: string): void {
-    this.getPasswordInput().clear();
-    if (value) this.getPasswordInput().type(value, { log: false });
+    fillInput(SEL.passwordInput, value, { log: false });
   }
 
   submit(): void {
@@ -99,11 +97,12 @@ class AuthPopup {
   }
 
   acceptAgreement(): void {
-    cy.get(SEL.agreementCheckbox).check({ force: true });
+    cy.get(SEL.agreementCheckbox).check();
   }
 
   clickForgotPassword(): void {
-    cy.get(SEL.forgotPassword).click();
+    // The class selector matched 3 elements (wrapper + two links), so find it by text.
+    cy.get(SEL.root).contains('Забули пароль?').click();
   }
 
   clickGoogle(): void {

@@ -1,4 +1,5 @@
 import BasePage from './BasePage';
+import { fillInput } from './fillInput';
 
 // Collected from dev.rentzilla.com.ua.
 const SEL = {
@@ -71,10 +72,8 @@ class HomePage extends BasePage {
   }
 
   submitConsultation(name: string, phone: string): void {
-    this.getConsultationNameInput().clear();
-    if (name) this.getConsultationNameInput().type(name);
-    this.getConsultationPhoneInput().clear();
-    if (phone) this.getConsultationPhoneInput().type(phone);
+    fillInput(SEL.consultationName, name);
+    fillInput(SEL.consultationPhone, phone);
     cy.get(SEL.consultationSubmit).click();
   }
 }

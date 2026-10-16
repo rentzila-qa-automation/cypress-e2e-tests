@@ -18,15 +18,6 @@ export default abstract class BasePage {
     return cy.contains(selector, text);
   }
 
-  protected click(selector: string): void {
-    this.el(selector).should('be.visible').click();
-  }
-
-  protected fill(selector: string, value: string): void {
-    this.el(selector).should('be.visible').clear();
-    if (value !== '') this.el(selector).type(value);
-  }
-
   verifyUrl(part: string = this.path): void {
     cy.location('pathname').should('include', part);
   }

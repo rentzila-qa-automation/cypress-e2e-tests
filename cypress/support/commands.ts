@@ -1,8 +1,7 @@
 import Header from '../pages/components/Header';
 import AuthPopup from '../pages/components/AuthPopup';
 import { getUser, Role } from './users';
-
-const LOGIN_API = '/api/auth/jwt/create/';
+import { LOGIN_API } from './constants';
 
 /**
  * Logs in as one of the test accounts and caches the session, so each role
