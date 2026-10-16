@@ -1,5 +1,5 @@
-import Header from '../pages/components/Header';
-import AuthPopup from '../pages/components/AuthPopup';
+import header from '../pages/components/Header';
+import authPopup from '../pages/components/AuthPopup';
 import { getUser, Role } from './users';
 import { LOGIN_API } from './constants';
 
@@ -19,17 +19,17 @@ Cypress.Commands.add('loginAs', (role: Role = 'user') => {
     () => {
       cy.visit('/');
       cy.intercept('POST', LOGIN_API).as('login');
-      Header.openLoginPopup();
-      AuthPopup.login(login, password);
+      header.openLoginPopup();
+      authPopup.login(login, password);
       cy.wait('@login').its('response.statusCode').should('eq', 200);
-      Header.getLoginButton().should('not.exist');
+      header.getLoginButton().should('not.exist');
     },
     {
       validate() {
         cy.visit('/');
         // TODO (when test accounts are issued): replace with a positive check,
-        // for example Header.getUserIcon().should('be.visible')
-        Header.getLoginButton().should('not.exist');
+        // for example header.getUserIcon().should('be.visible')
+        header.getLoginButton().should('not.exist');
       },
       cacheAcrossSpecs: true,
     },
@@ -37,8 +37,8 @@ Cypress.Commands.add('loginAs', (role: Role = 'user') => {
 });
 
 Cypress.Commands.add('logout', () => {
-  Header.logout();
-  Header.getLoginButton().should('be.visible');
+  header.logout();
+  header.getLoginButton().should('be.visible');
 });
 
 declare global {

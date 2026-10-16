@@ -92,6 +92,7 @@ Example spec with all conventions: `cypress/e2e/auth/login-validation.cy.ts`
 - Some `data-testid` repeat on a page (`logo`, `searchInput` exist in both header and footer/main). Scope them: `header [data-testid="logo"]`.
 - Class names have a generated hash (`NavbarAuthBlock_buttonEnter__c9siH`) that changes on rebuild. Match only the stable part: `[class*="NavbarAuthBlock_buttonEnter"]`.
 - If a spec needs an element for an assertion, add a `getXxx()` method to the page object.
+- Page objects are exported as ready instances. Import them in camelCase: `import authPopup from '.../AuthPopup'`, not `AuthPopup`.
 
 **Specs**
 - One test case = one `it`, with the TestRail ID in the title: `it('C201 Authorization with valid email and password', ...)`.
