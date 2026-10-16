@@ -4,7 +4,6 @@ import header from '../../pages/components/Header';
 import { LOGIN_API } from '../../support/constants';
 import authPopup, { AUTH_MESSAGES, ERROR_INPUT_CLASS } from '../../pages/components/AuthPopup';
 
-// Example spec for the team: shows the conventions from README.
 describe('Login validation', () => {
   beforeEach(() => {
     homePage.open();

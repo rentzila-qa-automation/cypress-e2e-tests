@@ -1,10 +1,8 @@
 import { fillInput } from '../fillInput';
 
-// Login / registration popup. Collected from dev.rentzilla.com.ua.
 export const AUTH_MESSAGES = {
   required: 'Поле не може бути порожнім',
   invalidCredentials: 'Невірний e-mail або пароль',
-  // From test case C207, not yet checked on the site:
   invalidFormat: 'Неправильний формат email або номера телефону',
 };
 
@@ -12,9 +10,7 @@ const SEL = {
   root: '[data-testid="loginPopup"]',
   title: '[data-testid="authorizationTitle"]',
   closeButton: '[data-testid="authClose"]',
-  // Login form
   loginInput: '#email',
-  // Registration form uses a different id for the same field
   registrationEmailInput: '#login',
   passwordInput: '#password',
   showPasswordIcon: '[data-testid="reactHookButton"]',
@@ -26,10 +22,6 @@ const SEL = {
   formError: '[data-testid="errorMessage"]',
 };
 
-/**
- * Stable part of the class added to an input in the red error state.
- * The full class has a hash suffix, so check with 'include', not 'have.class'.
- */
 export const ERROR_INPUT_CLASS = 'CustomReactHookInput_error_input';
 
 class AuthPopup {
@@ -91,7 +83,6 @@ class AuthPopup {
     cy.get(SEL.showPasswordIcon).click();
   }
 
-  /** Switches between "Вхід" and "Реєстрація". */
   switchForm(): void {
     cy.get(SEL.switcher).click();
   }
@@ -101,7 +92,6 @@ class AuthPopup {
   }
 
   clickForgotPassword(): void {
-    // The class selector matched 3 elements (wrapper + two links), so find it by text.
     cy.get(SEL.root).contains('Забули пароль?').click();
   }
 

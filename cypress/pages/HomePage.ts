@@ -1,17 +1,13 @@
 import BasePage from './BasePage';
 import { fillInput } from './fillInput';
 
-// Collected from dev.rentzilla.com.ua.
 const SEL = {
   searchInput: 'main [data-testid="searchInput"]',
   mapButton: '[data-testid="mapButton"]',
-  servicesSection: '[data-testid="services"]',
   serviceTabs: '[data-testid^="services__"]',
   serviceItems: '[data-testid^="service__"]',
-  equipmentSection: '[data-testid="specialEquipment"]',
   equipmentTabs: '[data-testid^="specialEquipment__"]',
   equipmentItems: '[data-testid^="category__"]',
-  telegramBanner: '[data-testid="completeTenderRectangle"]',
   telegramBannerClose: '[data-testid="crossButton"]',
   consultationName: 'input[name="name"]',
   consultationPhone: '#mobile',
@@ -49,12 +45,10 @@ class HomePage extends BasePage {
     return cy.get(SEL.consultationPhone);
   }
 
-  /** Tab ids look like "populyarni", "budivelni" (see data-testid="services__<id>"). */
   selectServiceTab(id: string): void {
     cy.get(`[data-testid="services__${id}"]`).click();
   }
 
-  /** Tab ids look like "populyarna", "budivelna" (see data-testid="specialEquipment__<id>"). */
   selectEquipmentTab(id: string): void {
     cy.get(`[data-testid="specialEquipment__${id}"]`).click();
   }

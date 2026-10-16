@@ -1,4 +1,3 @@
-// Collected from dev.rentzilla.com.ua (desktop, 1440px).
 const SEL = {
   root: 'header',
   logo: 'header [data-testid="logo"]',
@@ -10,8 +9,6 @@ const SEL = {
   loginButton: '[class*="NavbarAuthBlock_buttonEnter"]',
 };
 
-// Visible only to a logged-in user. TODO (when test accounts are issued):
-// collect these on the site and replace null with the selector.
 const SEL_LOGGED_IN: Record<'userIcon' | 'userDropdown' | 'userDropdownEmail' | 'adminIcon', string | null> = {
   userIcon: null,
   userDropdown: null,

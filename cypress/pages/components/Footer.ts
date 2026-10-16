@@ -1,7 +1,5 @@
-// Collected from dev.rentzilla.com.ua.
 const SEL = {
   root: '[class*="Footer_footer"]',
-  aboutTitle: '[data-testid="content"]',
   privacyPolicy: '[data-testid="politika-konfidenciinosti"] a',
   cookiePolicy: '[data-testid="pravila-vikoristannya-failiv-cookie"] a',
   termsConditions: '[data-testid="umovi-dostupu-ta-koristuvannya"] a',
