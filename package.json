@@ -1,0 +1,21 @@
+{
+  "name": "rentzila-cypress-e2e-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cypress E2E tests for Rentzila",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:chrome": "cypress run --browser chrome",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.0.0",
+    "@types/node": "^22.0.0",
+    "cypress": "^14.0.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
