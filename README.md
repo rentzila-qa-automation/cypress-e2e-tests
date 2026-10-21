@@ -62,6 +62,10 @@ A missing account fails the test with a message saying which role to fill in.
 | `npm run cy:open` | Opens the Cypress runner |
 | `npm run cy:run` | Runs all specs headless |
 | `npm run typecheck` | Checks TypeScript types |
+| `npm run lint` | Lints the codebase with ESLint |
+| `npm run lint:fix` | Lints and auto-fixes what it can |
+| `npm run format` | Formats the codebase with Prettier |
+| `npm run format:check` | Checks formatting without writing changes |
 
 ## Project structure
 
