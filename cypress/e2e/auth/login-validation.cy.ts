@@ -12,9 +12,12 @@ describe('Login validation', () => {
 
   it('C200 Authorization with empty fields', () => {
     authPopup.submit();
-    authPopup.getFieldErrors().should('have.length', 2).each(($el) => {
-      cy.wrap($el).should('have.text', AUTH_MESSAGES.required);
-    });
+    authPopup
+      .getFieldErrors()
+      .should('have.length', 2)
+      .each(($el) => {
+        cy.wrap($el).should('have.text', AUTH_MESSAGES.required);
+      });
     authPopup.getLoginInput().invoke('attr', 'class').should('include', ERROR_INPUT_CLASS);
     authPopup.getPasswordInput().invoke('attr', 'class').should('include', ERROR_INPUT_CLASS);
     authPopup.getRoot().should('be.visible');

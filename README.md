@@ -32,13 +32,13 @@ npm run cy:open
 
 Fill `users` in `cypress.env.json`. `login` is an email or a phone number, as typed into the login form.
 
-| Role | Account | Used in |
-|---|---|---|
-| `user` | Private person, registered by email | Most tests |
-| `phoneUser` | Registered by phone number | C202, C333, C386 |
-| `admin` | Superuser | Admin pages |
-| `tenderOwner` | ФОП or Юридична особа | Creating tenders (C231) |
-| `tenderBidder` | Another ФОП or Юридична особа | Offers (C246, C247) |
+| Role           | Account                             | Used in                 |
+| -------------- | ----------------------------------- | ----------------------- |
+| `user`         | Private person, registered by email | Most tests              |
+| `phoneUser`    | Registered by phone number          | C202, C333, C386        |
+| `admin`        | Superuser                           | Admin pages             |
+| `tenderOwner`  | ФОП or Юридична особа               | Creating tenders (C231) |
+| `tenderBidder` | Another ФОП or Юридична особа       | Offers (C246, C247)     |
 
 In a test:
 
@@ -52,16 +52,21 @@ beforeEach(() => {
 A missing account fails the test with a message saying which role to fill in.
 
 **Waiting for test accounts:**
+
 - Header elements for a logged-in user (avatar, profile menu, admin icon) are `null` in `Header.ts`. Calling them fails with a clear message until they are collected.
 - `cy.loginAs` logs in through the UI. Switch to `cy.request` once we see where the app stores the token.
 
 ## Scripts
 
-| Command | What it does |
-|---|---|
-| `npm run cy:open` | Opens the Cypress runner |
-| `npm run cy:run` | Runs all specs headless |
-| `npm run typecheck` | Checks TypeScript types |
+| Command                | What it does                              |
+| ---------------------- | ----------------------------------------- |
+| `npm run cy:open`      | Opens the Cypress runner                  |
+| `npm run cy:run`       | Runs all specs headless                   |
+| `npm run typecheck`    | Checks TypeScript types                   |
+| `npm run lint`         | Lints the codebase with ESLint            |
+| `npm run lint:fix`     | Lints and auto-fixes what it can          |
+| `npm run format`       | Formats the codebase with Prettier        |
+| `npm run format:check` | Checks formatting without writing changes |
 
 ## Project structure
 
@@ -86,6 +91,7 @@ Example spec with all conventions: `cypress/e2e/auth/login-validation.cy.ts`
 ## Conventions
 
 **Locators**
+
 - Locators live only in page objects, never in spec files.
 - Keep them as constants at the top of the page object file and resolve them inside methods.
 - Priority: `data-testid` > `id` / `name` / `href` > class > text (`cy.contains`). Avoid long CSS chains.
@@ -95,6 +101,7 @@ Example spec with all conventions: `cypress/e2e/auth/login-validation.cy.ts`
 - Page objects are exported as ready instances. Import them in camelCase: `import authPopup from '.../AuthPopup'`, not `AuthPopup`.
 
 **Specs**
+
 - One test case = one `it`, with the TestRail ID in the title: `it('C201 Authorization with valid email and password', ...)`.
 - Use `cy.loginAs(role)` instead of logging in through the UI in every test (except auth tests).
 - Use faker for non-critical data (names, emails, descriptions).
@@ -102,6 +109,7 @@ Example spec with all conventions: `cypress/e2e/auth/login-validation.cy.ts`
 - Tests must not depend on each other. Create the data a test needs (unit, tender) in `beforeEach` and clean it up after.
 
 **Cypress commands**
+
 - Page interactions go into page objects. `support/commands.ts` is only for helpers that do not belong to one page (login, API data setup).
 
 ## Workflow
