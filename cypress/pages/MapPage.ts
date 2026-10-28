@@ -5,6 +5,7 @@ const SEL = {
   showListButton: '[class*="MapListSwitcher_switch"]',
   gridIcon: '[data-testid="gridIcon"]',
   showMapButton: '[data-testid="switch"] button',
+  mapPane: '.leaflet-map-pane',
 };
 
 export const MAP_TEXT = {
@@ -17,6 +18,10 @@ class MapPage extends BasePage {
 
   getMap() {
     return cy.get(SEL.map);
+  }
+
+  getMapPane() {
+    return cy.get(SEL.mapPane);
   }
 
   getShowListButton() {
@@ -37,6 +42,21 @@ class MapPage extends BasePage {
 
   showMap(): void {
     this.getShowMapButton().click();
+  }
+
+  dragMap(): void {
+    this.getMap().trigger('mousedown', 'center', { eventConstructor: 'MouseEvent', button: 0 });
+    this.getMap().trigger('mousemove', 100, 100, { eventConstructor: 'MouseEvent', button: 0 });
+    this.getMap().trigger('mouseup', 100, 100, { eventConstructor: 'MouseEvent', button: 0 });
+  }
+
+  getMapPaneOffsetX() {
+    return this.getMapPane()
+      .invoke('attr', 'style')
+      .then((style) => {
+        const match = String(style).match(/translate3d\((-?[\d.]+)px/);
+        return Number(match?.[1]);
+      });
   }
 }
 

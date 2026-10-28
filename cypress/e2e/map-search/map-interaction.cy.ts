@@ -18,4 +18,13 @@ describe('Map interaction', () => {
     mapPage.getMap().should('be.visible');
     mapPage.getShowListButton().should('be.visible').and('have.text', MAP_TEXT.showList);
   });
+
+  it('C516: Drag and drop the map', () => {
+    mapPage.getMapPaneOffsetX().then((before) => {
+      mapPage.dragMap();
+      mapPage.getMapPaneOffsetX().should((after) => {
+        expect(Math.abs(after - before)).to.be.greaterThan(200);
+      });
+    });
+  });
 });
