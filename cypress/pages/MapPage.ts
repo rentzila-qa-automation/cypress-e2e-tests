@@ -6,6 +6,9 @@ const SEL = {
   gridIcon: '[data-testid="gridIcon"]',
   showMapButton: '[data-testid="switch"] button',
   mapPane: '.leaflet-map-pane',
+  zoomInButton: '.leaflet-control-zoom-in',
+  zoomOutButton: '.leaflet-control-zoom-out',
+  mapTiles: '.leaflet-tile',
 };
 
 export const MAP_TEXT = {
@@ -28,6 +31,18 @@ class MapPage extends BasePage {
     return cy.get(SEL.showListButton);
   }
 
+  getZoomInButton() {
+    return cy.get(SEL.zoomInButton);
+  }
+
+  getZoomOutButton() {
+    return cy.get(SEL.zoomOutButton);
+  }
+
+  getMapTiles() {
+    return cy.get(SEL.mapTiles);
+  }
+
   getGridIcon() {
     return cy.get(SEL.gridIcon);
   }
@@ -44,6 +59,26 @@ class MapPage extends BasePage {
     this.getShowMapButton().click();
   }
 
+  zoomIn(): void {
+    this.getMapPane().should('not.have.class', 'leaflet-zoom-anim');
+    this.getZoomInButton().click();
+  }
+
+  zoomOut(): void {
+    this.getMapPane().should('not.have.class', 'leaflet-zoom-anim');
+    this.getZoomOutButton().click();
+  }
+
+  scrollZoomIn(): void {
+    this.getMapPane().should('not.have.class', 'leaflet-zoom-anim');
+    this.getMap().trigger('wheel', 'center', { eventConstructor: 'WheelEvent', deltaY: -100 });
+  }
+
+  scrollZoomOut(): void {
+    this.getMapPane().should('not.have.class', 'leaflet-zoom-anim');
+    this.getMap().trigger('wheel', 'center', { eventConstructor: 'WheelEvent', deltaY: 100 });
+  }
+
   dragMap(): void {
     this.getMap().trigger('mousedown', 'center', { eventConstructor: 'MouseEvent', button: 0 });
     this.getMap().trigger('mousemove', 100, 100, { eventConstructor: 'MouseEvent', button: 0 });
@@ -55,6 +90,16 @@ class MapPage extends BasePage {
       .invoke('attr', 'style')
       .then((style) => {
         const match = String(style).match(/translate3d\((-?[\d.]+)px/);
+        return Number(match?.[1]);
+      });
+  }
+
+  getZoomLevel() {
+    return this.getMapTiles()
+      .first()
+      .invoke('attr', 'src')
+      .then((src) => {
+        const match = String(src).match(/\/256\/(\d+)\//);
         return Number(match?.[1]);
       });
   }

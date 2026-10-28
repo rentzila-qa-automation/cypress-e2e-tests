@@ -27,4 +27,27 @@ describe('Map interaction', () => {
       });
     });
   });
+
+  it('C501: Zoom in and out on the map', () => {
+    mapPage.getZoomLevel().then((before) => {
+      mapPage.scrollZoomIn();
+      mapPage
+        .getMapTiles()
+        .first()
+        .invoke('attr', 'src')
+        .should('include', `/256/${before + 1}/`);
+      mapPage.scrollZoomOut();
+      mapPage.getMapTiles().first().invoke('attr', 'src').should('include', `/256/${before}/`);
+      mapPage.zoomIn();
+      mapPage
+        .getMapTiles()
+        .first()
+        .invoke('attr', 'src')
+        .should('include', `/256/${before + 1}/`);
+      mapPage.getZoomOutButton().should('have.attr', 'aria-disabled', 'false');
+      mapPage.zoomOut();
+      mapPage.getMapTiles().first().invoke('attr', 'src').should('include', `/256/${before}/`);
+      mapPage.getZoomOutButton().should('have.attr', 'aria-disabled', 'true');
+    });
+  });
 });
