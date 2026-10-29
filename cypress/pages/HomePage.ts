@@ -9,10 +9,15 @@ const SEL = {
   equipmentTabs: '[data-testid^="specialEquipment__"]',
   equipmentItems: '[data-testid^="category__"]',
   telegramBannerClose: '[data-testid="crossButton"]',
+  consultationForm: 'form[class*="ConsultationForm_form"]',
   consultationName: 'input[name="name"]',
   consultationPhone: '#mobile',
   consultationSubmit: 'form[class*="ConsultationForm_form"] button',
+  consultationNameError: '[class*="ConsultationForm_name"] [class*="ConsultationForm_error_message"]',
+  consultationPhoneError: '[class*="ConsultationForm_phone"] [class*="ConsultationForm_error_message"]',
 };
+
+export const CONSULTATION_ERROR_CLASS = 'ConsultationForm_error__';
 
 class HomePage extends BasePage {
   protected readonly path = '/';
@@ -37,12 +42,28 @@ class HomePage extends BasePage {
     return cy.get(SEL.equipmentItems);
   }
 
+  getConsultationForm() {
+    return cy.get(SEL.consultationForm);
+  }
+
+  getConsultationNameError() {
+    return cy.get(SEL.consultationNameError);
+  }
+
+  getConsultationPhoneError() {
+    return cy.get(SEL.consultationPhoneError);
+  }
+
   getConsultationNameInput() {
     return cy.get(SEL.consultationName);
   }
 
   getConsultationPhoneInput() {
     return cy.get(SEL.consultationPhone);
+  }
+
+  clickConsultationSubmit(): void {
+    cy.get(SEL.consultationSubmit).click();
   }
 
   selectServiceTab(id: string): void {
