@@ -1,12 +1,10 @@
 import HomePage, { CONSULTATION_ERROR_CLASS } from '../../pages/HomePage';
+import { generateName, generateValidPhone, generateInvalidPhones } from '../../utils/ConsultationData';
 
 const MESSAGES = {
   required: 'Поле не може бути порожнім',
   invalidPhone: 'Телефон не пройшов валідацію',
 };
-
-const VALID_PHONE = '+380506743060';
-const INVALID_PHONES = ['+38063 111 111', '+1 1111111111111'];
 
 function verifyNameErrorState(hasError: boolean): void {
   HomePage.getConsultationNameInput()
@@ -22,6 +20,11 @@ function verifyPhoneErrorState(hasError: boolean): void {
 
 describe('Consultation form', () => {
   it('C226: Verify "У Вас залишилися питання?" form', () => {
+    const name = generateName();
+    const validPhone = generateValidPhone();
+    const invalidPhones = generateInvalidPhones();
+    cy.log(`Test data: name "${name}", valid phone "${validPhone}", invalid phones "${invalidPhones.join('", "')}"`);
+
     HomePage.open();
 
     HomePage.getConsultationForm().scrollIntoView().should('be.visible');
@@ -32,21 +35,21 @@ describe('Consultation form', () => {
     HomePage.getConsultationNameError().should('have.text', MESSAGES.required);
     HomePage.getConsultationPhoneError().should('have.text', MESSAGES.required);
 
-    HomePage.getConsultationNameInput().clear().type('Test');
+    HomePage.getConsultationNameInput().clear().type(name);
     HomePage.clickConsultationSubmit();
     verifyNameErrorState(false);
     verifyPhoneErrorState(true);
 
     HomePage.getConsultationPhoneInput().click().should('have.value', '+380');
 
-    HomePage.getConsultationPhoneInput().clear().type(VALID_PHONE);
+    HomePage.getConsultationPhoneInput().clear().type(validPhone);
     HomePage.getConsultationNameInput().clear();
     HomePage.clickConsultationSubmit();
     verifyNameErrorState(true);
     verifyPhoneErrorState(false);
 
-    HomePage.getConsultationNameInput().clear().type('Test');
-    INVALID_PHONES.forEach((phone) => {
+    HomePage.getConsultationNameInput().clear().type(name);
+    invalidPhones.forEach((phone) => {
       HomePage.getConsultationPhoneInput().clear().type(phone);
       HomePage.clickConsultationSubmit();
       verifyNameErrorState(false);

@@ -17,10 +17,16 @@ const SEL = {
   consultationPhoneError: '[class*="ConsultationForm_phone"] [class*="ConsultationForm_error_message"]',
 };
 
+const HERO_TITLE_TEXT = 'Сервіс пошуку послуг спецтехніки';
+
 export const CONSULTATION_ERROR_CLASS = 'ConsultationForm_error__';
 
 class HomePage extends BasePage {
   protected readonly path = '/';
+
+  getHeroTitle() {
+    return cy.contains(HERO_TITLE_TEXT);
+  }
 
   getSearchInput() {
     return cy.get(SEL.searchInput);

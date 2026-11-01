@@ -1,7 +1,9 @@
 import HomePage from '../../pages/HomePage';
-import Header from '../../pages//components/Header';
+import Header from '../../pages/components/Header';
 import Footer from '../../pages/components/Footer';
 import TendersPage from '../../pages/TendersPage';
+import UnitsPage from '../../pages/UnitsPage';
+import { privacyPolicyPage, cookiePolicyPage, termsPage } from '../../pages/PolicyPage';
 
 const TEXT = {
   about: 'Про нас',
@@ -13,21 +15,8 @@ const TEXT = {
   tenders: 'Тендери',
   contacts: 'Контакти',
   copyright: 'Усі права захищені',
-  privacyTitle: 'Політика конфіденційності',
-  cookieTitle: 'Політика використання файлів cookie',
-  termsTitle: 'Угода користувача',
   unitsSearchPlaceholder: 'Пошук оголошень або послуг',
   tendersSearchPlaceholder: 'Пошук тендера за ключовими словами',
-  mainPageText: 'Сервіс пошуку послуг спецтехніки',
-};
-
-const PATH = {
-  privacyPolicy: '/privacy-policy/',
-  cookiePolicy: '/cookie-policy/',
-  termsConditions: '/terms-conditions/',
-
-  units: '/products/',
-  tenders: '/tenders-map/',
 };
 
 const EMAIL = 'info@rentzila.com.ua';
@@ -56,32 +45,36 @@ describe('Footer', () => {
     Footer.getCopyright().should('be.visible').and('contain.text', TEXT.copyright);
 
     Footer.clickLink('privacyPolicy');
-    HomePage.verifyUrl(PATH.privacyPolicy);
-    cy.contains('h1, h2', TEXT.privacyTitle).should('be.visible');
+    privacyPolicyPage.verifyUrl();
+    privacyPolicyPage.getTitle().should('be.visible');
 
     Footer.getRoot().scrollIntoView();
     Footer.clickLink('cookiePolicy');
-    HomePage.verifyUrl(PATH.cookiePolicy);
-    cy.contains('h1, h2', TEXT.cookieTitle).should('be.visible');
+    cookiePolicyPage.verifyUrl();
+    cookiePolicyPage.getTitle().should('be.visible');
 
     Footer.getRoot().scrollIntoView();
     Footer.clickLink('termsConditions');
-    HomePage.verifyUrl(PATH.termsConditions);
-    cy.contains('h1, h2', TEXT.termsTitle).should('be.visible');
+    termsPage.verifyUrl();
+    termsPage.getTitle().should('be.visible');
 
     Footer.getRoot().scrollIntoView();
     Footer.clickLink('units');
-    HomePage.verifyUrl(PATH.units);
-    Header.getSearchInput().should('be.visible').and('have.attr', 'placeholder', TEXT.unitsSearchPlaceholder);
+    UnitsPage.verifyUrl();
+    Header.getSearchInput()
+      .should('be.visible')
+      .and('have.attr', 'placeholder', TEXT.unitsSearchPlaceholder);
 
     Header.clickLogo();
     cy.location('pathname').should('eq', '/');
-    cy.contains(TEXT.mainPageText).should('be.visible');
+    HomePage.getHeroTitle().should('be.visible');
 
     Footer.getRoot().scrollIntoView();
     Footer.clickLink('tenders');
-    HomePage.verifyUrl(PATH.tenders);
-    TendersPage.getSearchInput().should('be.visible').and('have.attr', 'placeholder', TEXT.tendersSearchPlaceholder);
+    TendersPage.verifyUrl();
+    TendersPage.getSearchInput()
+      .should('be.visible')
+      .and('have.attr', 'placeholder', TEXT.tendersSearchPlaceholder);
 
     Header.clickLogo();
     cy.location('pathname').should('eq', '/');
