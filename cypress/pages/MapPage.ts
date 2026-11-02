@@ -16,6 +16,12 @@ export const MAP_TEXT = {
   showMap: 'Показати на мапі',
 };
 
+function parseZoomLevel(src: string | undefined): number {
+  const match = String(src).match(/\/256\/(\d+)\//);
+  expect(match, `zoom level in tile src "${src}"`).to.not.equal(null);
+  return Number(match?.[1]);
+}
+
 class MapPage extends BasePage {
   protected readonly path = '/products/';
 
@@ -90,6 +96,7 @@ class MapPage extends BasePage {
       .invoke('attr', 'style')
       .then((style) => {
         const match = String(style).match(/translate3d\((-?[\d.]+)px/);
+        expect(match, `translate3d in map pane style "${style}"`).to.not.equal(null);
         return Number(match?.[1]);
       });
   }
@@ -98,10 +105,31 @@ class MapPage extends BasePage {
     return this.getMapTiles()
       .first()
       .invoke('attr', 'src')
-      .then((src) => {
-        const match = String(src).match(/\/256\/(\d+)\//);
-        return Number(match?.[1]);
+      .then((src) => parseZoomLevel(src));
+  }
+
+  shouldHaveZoomLevel(level: number): void {
+    this.getMapTiles().should(($tiles) => {
+      $tiles.toArray().forEach((tile) => {
+        expect(parseZoomLevel(tile.getAttribute('src') ?? undefined)).to.equal(level);
       });
+    });
+  }
+
+  shouldHaveZoomAbove(level: number): void {
+    this.getMapTiles().should(($tiles) => {
+      $tiles.toArray().forEach((tile) => {
+        expect(parseZoomLevel(tile.getAttribute('src') ?? undefined)).to.be.greaterThan(level);
+      });
+    });
+  }
+
+  shouldHaveZoomBelow(level: number): void {
+    this.getMapTiles().should(($tiles) => {
+      $tiles.toArray().forEach((tile) => {
+        expect(parseZoomLevel(tile.getAttribute('src') ?? undefined)).to.be.lessThan(level);
+      });
+    });
   }
 }
 

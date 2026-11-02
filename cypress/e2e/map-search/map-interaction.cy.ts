@@ -29,24 +29,20 @@ describe('Map interaction', () => {
   });
 
   it('C501: Zoom in and out on the map', () => {
-    mapPage.getZoomLevel().then((before) => {
+    mapPage.getZoomLevel().then((initial) => {
       mapPage.scrollZoomIn();
-      mapPage
-        .getMapTiles()
-        .first()
-        .invoke('attr', 'src')
-        .should('include', `/256/${before + 1}/`);
+      mapPage.shouldHaveZoomAbove(initial);
+    });
+    mapPage.getZoomLevel().then((zoomedIn) => {
       mapPage.scrollZoomOut();
-      mapPage.getMapTiles().first().invoke('attr', 'src').should('include', `/256/${before}/`);
+      mapPage.shouldHaveZoomBelow(zoomedIn);
+    });
+    mapPage.getZoomLevel().then((current) => {
       mapPage.zoomIn();
-      mapPage
-        .getMapTiles()
-        .first()
-        .invoke('attr', 'src')
-        .should('include', `/256/${before + 1}/`);
+      mapPage.shouldHaveZoomLevel(current + 1);
       mapPage.getZoomOutButton().should('have.attr', 'aria-disabled', 'false');
       mapPage.zoomOut();
-      mapPage.getMapTiles().first().invoke('attr', 'src').should('include', `/256/${before}/`);
+      mapPage.shouldHaveZoomLevel(current);
       mapPage.getZoomOutButton().should('have.attr', 'aria-disabled', 'true');
     });
   });
