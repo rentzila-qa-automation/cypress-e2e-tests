@@ -1,4 +1,4 @@
-import HomePage, { CONSULTATION_ERROR_CLASS } from '../../pages/HomePage';
+import homePage, { CONSULTATION_ERROR_CLASS } from '../../pages/HomePage';
 import { generateName, generateValidPhone, generateInvalidPhones } from '../../utils/ConsultationData';
 
 const MESSAGES = {
@@ -7,13 +7,13 @@ const MESSAGES = {
 };
 
 function verifyNameErrorState(hasError: boolean): void {
-  HomePage.getConsultationNameInput()
+  homePage.getConsultationNameInput()
     .invoke('attr', 'class')
     .should(hasError ? 'include' : 'not.include', CONSULTATION_ERROR_CLASS);
 }
 
 function verifyPhoneErrorState(hasError: boolean): void {
-  HomePage.getConsultationPhoneInput()
+  homePage.getConsultationPhoneInput()
     .invoke('attr', 'class')
     .should(hasError ? 'include' : 'not.include', CONSULTATION_ERROR_CLASS);
 }
@@ -25,36 +25,36 @@ describe('Consultation form', () => {
     const invalidPhones = generateInvalidPhones();
     cy.log(`Test data: name "${name}", valid phone "${validPhone}", invalid phones "${invalidPhones.join('", "')}"`);
 
-    HomePage.open();
+    homePage.open();
 
-    HomePage.getConsultationForm().scrollIntoView().should('be.visible');
+    homePage.getConsultationForm().scrollIntoView().should('be.visible');
 
-    HomePage.clickConsultationSubmit();
+    homePage.clickConsultationSubmit();
     verifyNameErrorState(true);
     verifyPhoneErrorState(true);
-    HomePage.getConsultationNameError().should('have.text', MESSAGES.required);
-    HomePage.getConsultationPhoneError().should('have.text', MESSAGES.required);
+    homePage.getConsultationNameError().should('have.text', MESSAGES.required);
+    homePage.getConsultationPhoneError().should('have.text', MESSAGES.required);
 
-    HomePage.getConsultationNameInput().clear().type(name);
-    HomePage.clickConsultationSubmit();
+    homePage.fillConsultationName(name);
+    homePage.clickConsultationSubmit();
     verifyNameErrorState(false);
     verifyPhoneErrorState(true);
 
-    HomePage.getConsultationPhoneInput().click().should('have.value', '+380');
+    homePage.getConsultationPhoneInput().click().should('have.value', '+380');
 
-    HomePage.getConsultationPhoneInput().clear().type(validPhone);
-    HomePage.getConsultationNameInput().clear();
-    HomePage.clickConsultationSubmit();
+    homePage.fillConsultationPhone(validPhone);
+    homePage.fillConsultationName('');
+    homePage.clickConsultationSubmit();
     verifyNameErrorState(true);
     verifyPhoneErrorState(false);
 
-    HomePage.getConsultationNameInput().clear().type(name);
+    homePage.fillConsultationName(name);
     invalidPhones.forEach((phone) => {
-      HomePage.getConsultationPhoneInput().clear().type(phone);
-      HomePage.clickConsultationSubmit();
+      homePage.fillConsultationPhone(phone);
+      homePage.clickConsultationSubmit();
       verifyNameErrorState(false);
       verifyPhoneErrorState(true);
-      HomePage.getConsultationPhoneError().should('have.text', MESSAGES.invalidPhone);
+      homePage.getConsultationPhoneError().should('have.text', MESSAGES.invalidPhone);
     });
 
     // 7-9. Not automated.

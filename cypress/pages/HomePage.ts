@@ -97,6 +97,13 @@ class HomePage extends BasePage {
     fillInput(SEL.consultationPhone, phone);
     cy.get(SEL.consultationSubmit).click();
   }
+  fillConsultationName(name: string): void {
+    fillInput(SEL.consultationName, name);
+  }
+
+  fillConsultationPhone(phone: string): void {
+    fillInput(SEL.consultationPhone, phone);
+  }
 }
 
 export default new HomePage();

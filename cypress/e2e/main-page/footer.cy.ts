@@ -1,8 +1,8 @@
-import HomePage from '../../pages/HomePage';
-import Header from '../../pages/components/Header';
-import Footer from '../../pages/components/Footer';
-import TendersPage from '../../pages/TendersPage';
-import UnitsPage from '../../pages/UnitsPage';
+import homePage from '../../pages/HomePage';
+import header from '../../pages/components/Header';
+import footer from '../../pages/components/Footer';
+import tendersPage from '../../pages/TendersPage';
+import unitsPage from '../../pages/UnitsPage';
 import { privacyPolicyPage, cookiePolicyPage, termsPage } from '../../pages/PolicyPage';
 
 const TEXT = {
@@ -23,63 +23,63 @@ const EMAIL = 'info@rentzila.com.ua';
 
 describe('Footer', () => {
   it('C214: Verify that all elements on the footer are displayed and all links are clickable', () => {
-    HomePage.open();
+    homePage.open();
 
-    Footer.getRoot().scrollIntoView().should('be.visible');
-    Footer.getLogo().should('be.visible').parents('a').should('not.exist');
+    footer.getRoot().scrollIntoView().should('be.visible');
+    footer.getLogo().should('be.visible').parents('a').should('not.exist');
 
-    Footer.getRoot().contains(TEXT.about).should('be.visible');
+    footer.getRoot().contains(TEXT.about).should('be.visible');
 
-    Footer.getLink('privacyPolicy').should('be.visible').and('contain.text', TEXT.privacyPolicy);
-    Footer.getLink('cookiePolicy').should('be.visible').and('contain.text', TEXT.cookiePolicy);
-    Footer.getLink('termsConditions').should('be.visible').and('contain.text', TEXT.termsConditions);
+    footer.getLink('privacyPolicy').should('be.visible').and('contain.text', TEXT.privacyPolicy);
+    footer.getLink('cookiePolicy').should('be.visible').and('contain.text', TEXT.cookiePolicy);
+    footer.getLink('termsConditions').should('be.visible').and('contain.text', TEXT.termsConditions);
 
-    Footer.getRoot().contains(TEXT.users).should('be.visible');
-    Footer.getLink('units').should('be.visible').and('contain.text', TEXT.units);
-    Footer.getLink('tenders').should('be.visible').and('contain.text', TEXT.tenders);
+    footer.getRoot().contains(TEXT.users).should('be.visible');
+    footer.getLink('units').should('be.visible').and('contain.text', TEXT.units);
+    footer.getLink('tenders').should('be.visible').and('contain.text', TEXT.tenders);
 
-    Footer.getRoot().contains(TEXT.contacts).should('be.visible');
-    Footer.getEmail().should('be.visible').and('contain.text', EMAIL);
+    footer.getRoot().contains(TEXT.contacts).should('be.visible');
+    footer.getEmail().should('be.visible').and('contain.text', EMAIL);
 
-    Footer.getLogo().should('be.visible');
-    Footer.getCopyright().should('be.visible').and('contain.text', TEXT.copyright);
+    footer.getLogo().should('be.visible');
+    footer.getCopyright().should('be.visible').and('contain.text', TEXT.copyright);
 
-    Footer.clickLink('privacyPolicy');
+    footer.clickLink('privacyPolicy');
     privacyPolicyPage.verifyUrl();
     privacyPolicyPage.getTitle().should('be.visible');
 
-    Footer.getRoot().scrollIntoView();
-    Footer.clickLink('cookiePolicy');
+    footer.getRoot().scrollIntoView();
+    footer.clickLink('cookiePolicy');
     cookiePolicyPage.verifyUrl();
     cookiePolicyPage.getTitle().should('be.visible');
 
-    Footer.getRoot().scrollIntoView();
-    Footer.clickLink('termsConditions');
+    footer.getRoot().scrollIntoView();
+    footer.clickLink('termsConditions');
     termsPage.verifyUrl();
     termsPage.getTitle().should('be.visible');
 
-    Footer.getRoot().scrollIntoView();
-    Footer.clickLink('units');
-    UnitsPage.verifyUrl();
-    Header.getSearchInput()
+    footer.getRoot().scrollIntoView();
+    footer.clickLink('units');
+    unitsPage.verifyUrl();
+    header.getSearchInput()
       .should('be.visible')
       .and('have.attr', 'placeholder', TEXT.unitsSearchPlaceholder);
 
-    Header.clickLogo();
+    header.clickLogo();
     cy.location('pathname').should('eq', '/');
-    HomePage.getHeroTitle().should('be.visible');
+    homePage.getHeroTitle().should('be.visible');
 
-    Footer.getRoot().scrollIntoView();
-    Footer.clickLink('tenders');
-    TendersPage.verifyUrl();
-    TendersPage.getSearchInput()
+    footer.getRoot().scrollIntoView();
+    footer.clickLink('tenders');
+    tendersPage.verifyUrl();
+    tendersPage.getSearchInput()
       .should('be.visible')
       .and('have.attr', 'placeholder', TEXT.tendersSearchPlaceholder);
 
-    Header.clickLogo();
+    header.clickLogo();
     cy.location('pathname').should('eq', '/');
 
-    Footer.getRoot().scrollIntoView();
-    Footer.getEmail().should('have.attr', 'href', `mailto:${EMAIL}`);
+    footer.getRoot().scrollIntoView();
+    footer.getEmail().should('have.attr', 'href', `mailto:${EMAIL}`);
   });
 });
