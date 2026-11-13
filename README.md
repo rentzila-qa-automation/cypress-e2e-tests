@@ -58,15 +58,33 @@ A missing account fails the test with a message saying which role to fill in.
 
 ## Scripts
 
-| Command                | What it does                              |
-| ---------------------- | ----------------------------------------- |
-| `npm run cy:open`      | Opens the Cypress runner                  |
-| `npm run cy:run`       | Runs all specs headless                   |
-| `npm run typecheck`    | Checks TypeScript types                   |
-| `npm run lint`         | Lints the codebase with ESLint            |
-| `npm run lint:fix`     | Lints and auto-fixes what it can          |
-| `npm run format`       | Formats the codebase with Prettier        |
-| `npm run format:check` | Checks formatting without writing changes |
+| Command                   | What it does                                                                              |
+| ------------------------- | ----------------------------------------------------------------------------------------- |
+| `npm run cy:open`         | Opens the Cypress runner                                                                  |
+| `npm run cy:run`          | Runs all specs headless                                                                   |
+| `npm run typecheck`       | Checks TypeScript types                                                                   |
+| `npm run lint`            | Lints the codebase with ESLint                                                            |
+| `npm run lint:fix`        | Lints and auto-fixes what it can                                                          |
+| `npm run format`          | Formats the codebase with Prettier                                                        |
+| `npm run format:check`    | Checks formatting without writing changes                                                 |
+| `npm run allure:generate` | Builds a single-file Allure report from `allure-results/` into `allure-report/index.html` |
+| `npm run allure:open`     | Opens the generated Allure report                                                         |
+
+## CI and Allure report
+
+GitHub Actions workflow: `.github/workflows/e2e.yml`.
+
+- Runs on every pull request to `main`, on push to `main`, and manually (Actions → E2E tests → Run workflow).
+- Runs go one at a time (`concurrency`), because all runs share the same test accounts on dev.
+- Credentials come from the repository secret `CYPRESS_ENV_JSON`: the full content of `cypress.env.json` for the CI accounts.
+- The report is generated even when tests fail.
+
+Where to find the report:
+
+- **GitHub Pages:** `https://rentzila-qa-automation.github.io/cypress-e2e-tests/pr-<PR number>/` for a pull request, `.../main/` for `main`. The link is also in the run summary.
+- **Artifact:** `allure-report-...` on the run page (Actions → run → Artifacts). Unzip and open `index.html`.
+
+Local report: run tests (`npm run cy:run`), then `npm run allure:generate` and open `allure-report/index.html`.
 
 ## Project structure
 

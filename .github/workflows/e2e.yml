@@ -1,0 +1,78 @@
+name: E2E tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# All runs use the same test accounts on dev, so they go one at a time.
+concurrency:
+  group: e2e-dev-shared-accounts
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      REPORT_DIR: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.ref_name }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create cypress.env.json from secret
+        env:
+          CYPRESS_ENV_JSON: ${{ secrets.CYPRESS_ENV_JSON }}
+        run: |
+          if [ -z "$CYPRESS_ENV_JSON" ]; then
+            echo "::error::Secret CYPRESS_ENV_JSON is not set (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
+          printf '%s' "$CYPRESS_ENV_JSON" > cypress.env.json
+
+      - name: Run Cypress
+        run: npm run cy:run:chrome
+
+      - name: Generate Allure report
+        if: ${{ !cancelled() }}
+        run: npm run allure:generate
+
+      - name: Upload Allure report artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ env.REPORT_DIR }}
+          path: allure-report
+          retention-days: 14
+
+      - name: Publish Allure report to GitHub Pages
+        if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
+          destination_dir: ${{ env.REPORT_DIR }}
+          keep_files: true
+
+      - name: Add report link to run summary
+        if: ${{ !cancelled() }}
+        run: |
+          URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${REPORT_DIR}/"
+          echo "### Allure report" >> "$GITHUB_STEP_SUMMARY"
+          echo "$URL" >> "$GITHUB_STEP_SUMMARY"
