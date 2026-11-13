@@ -5,7 +5,17 @@ import pluginCypress from 'eslint-plugin-cypress';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 
 export default defineConfig([
-  { ignores: ['node_modules/', 'cypress/screenshots/', 'cypress/videos/', 'cypress/downloads/', 'cypress/reports/'] },
+  {
+    ignores: [
+      'node_modules/',
+      'cypress/screenshots/',
+      'cypress/videos/',
+      'cypress/downloads/',
+      'cypress/reports/',
+      'allure-results/',
+      'allure-report/',
+    ],
+  },
   js.configs.recommended,
   tseslint.configs.recommended,
   {
