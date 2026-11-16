@@ -72,19 +72,32 @@ A missing account fails the test with a message saying which role to fill in.
 
 ## CI and Allure report
 
+**Latest report from `main`:** https://rentzila-qa-automation.github.io/cypress-e2e-tests/
+
 GitHub Actions workflow: `.github/workflows/e2e.yml`.
 
-- Runs on every pull request to `main`, on push to `main`, and manually (Actions → E2E tests → Run workflow).
-- Runs go one at a time (`concurrency`), because all runs share the same test accounts on dev.
-- Credentials come from the repository secret `CYPRESS_ENV_JSON`: the full content of `cypress.env.json` for the CI accounts.
-- The report is generated even when tests fail.
+**When tests run**
 
-Where to find the report:
+- Every day at 06:00 UTC (08:00 Kyiv in winter, 09:00 in summer), on `main`.
+- On every pull request to `main` and on every push to `main`.
+- Manually: Actions → E2E tests → Run workflow → choose a branch → Run workflow.
 
-- **GitHub Pages:** `https://rentzila-qa-automation.github.io/cypress-e2e-tests/pr-<PR number>/` for a pull request, `.../main/` for `main`. The link is also in the run summary.
-- **Artifact:** `allure-report-...` on the run page (Actions → run → Artifacts). Unzip and open `index.html`.
+Runs go one at a time (`concurrency`), because all runs share the same test accounts on dev.
+Credentials come from the repository secret `CYPRESS_ENV_JSON`: the full content of `cypress.env.json` for the CI accounts.
 
-Local report: run tests (`npm run cy:run`), then `npm run allure:generate` and open `allure-report/index.html`.
+**Where to find the report**
+
+- **Latest `main` run:** the link above. The same link is in the repo's About section and on the Deployments page.
+- **Pull request:** `https://rentzila-qa-automation.github.io/cypress-e2e-tests/pr-<PR number>/`.
+- **Any run:** the link is in the run summary (Actions → run). The report is also attached to the run as an artifact `allure-report-...`: download, unzip and open `index.html`.
+
+The report is generated even when tests fail. It keeps the history of the last 30 runs (trend charts and per-test history), separately for `main` and for each pull request.
+
+**Local report**
+
+1. Run tests: `npm run cy:run`.
+2. Build the report: `npm run allure:generate`.
+3. Open it: `npm run allure:open`, or open `allure-report/index.html` in a browser.
 
 ## Project structure
 

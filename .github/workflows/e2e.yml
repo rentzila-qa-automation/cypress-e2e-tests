@@ -6,6 +6,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Every day at 06:00 UTC (08:00 Kyiv in winter, 09:00 in summer). Scheduled runs always use main.
+  schedule:
+    - cron: '0 6 * * *'
 
 # All runs use the same test accounts on dev, so they go one at a time.
 concurrency:
@@ -48,9 +51,26 @@ jobs:
       - name: Run Cypress
         run: npm run cy:run:chrome
 
+      # History lives next to each report on gh-pages (<REPORT_DIR>/history/history.jsonl).
+      # Pull it before generating, so the new report shows trends from previous runs.
+      - name: Restore Allure history
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p allure-history
+          if git fetch --depth=1 origin gh-pages 2>/dev/null \
+            && git show "origin/gh-pages:${REPORT_DIR}/history/history.jsonl" > allure-history/history.jsonl 2>/dev/null; then
+            echo "History restored: $(wc -l < allure-history/history.jsonl) previous runs."
+          else
+            rm -f allure-history/history.jsonl
+            echo "No history yet, starting a new one."
+          fi
+
       - name: Generate Allure report
         if: ${{ !cancelled() }}
-        run: npm run allure:generate
+        run: |
+          npm run allure:generate
+          mkdir -p allure-report/history
+          cp allure-history/history.jsonl allure-report/history/history.jsonl
 
       - name: Upload Allure report artifact
         if: ${{ !cancelled() }}
@@ -68,6 +88,16 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-report
           destination_dir: ${{ env.REPORT_DIR }}
+          keep_files: true
+
+      # The site root is what Deployments, About and README link to: the latest report from main.
+      - name: Publish main report to site root
+        if: ${{ !cancelled() && github.event_name != 'pull_request' && github.ref_name == 'main' }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
           keep_files: true
 
       - name: Add report link to run summary

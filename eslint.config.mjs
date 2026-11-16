@@ -14,6 +14,7 @@ export default defineConfig([
       'cypress/reports/',
       'allure-results/',
       'allure-report/',
+      'allure-history/',
     ],
   },
   js.configs.recommended,
