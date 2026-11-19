@@ -27,6 +27,10 @@ class ProfilePage extends BasePage {
     return cy.contains(SEL.fieldWrapper, title).find(SEL.fieldInput);
   }
 
+  fillField(title: string, value: string) {
+    this.getFieldInput(title).should('be.visible').clear().type(value);
+  }
+
   getSelect(title: string) {
     return cy.contains(SEL.personTypeWrapper, title).find(SEL.customSelect);
   }

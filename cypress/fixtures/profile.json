@@ -1,0 +1,8 @@
+{
+  "fieldLimits": {
+    "fullName": 25,
+    "telegram": 30,
+    "legalEntityCode": 8,
+    "taxNumber": 10
+  }
+}
