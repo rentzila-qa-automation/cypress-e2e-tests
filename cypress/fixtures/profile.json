@@ -4,5 +4,14 @@
     "telegram": 30,
     "legalEntityCode": 8,
     "taxNumber": 10
+  },
+  "invalidValues": {
+    "shortLegalEntityCode": "1234567",
+    "shortTaxNumber": "123",
+    "nonLetters": ["[]", "#", "(", ")", "!", "+", "/", "123"],
+    "shortPhone": "+38012345678",
+    "unknownOperatorPhone": "+380494882982",
+    "invalidCities": ["Киев", "Варшава"],
+    "unverifiedPhone": "+380671234567"
   }
 }
