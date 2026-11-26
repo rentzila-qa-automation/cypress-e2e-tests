@@ -155,3 +155,6 @@ cypress/videos/
 cypress/downloads/
 cypress/reports/
 .DS_Store
+allure-results/
+allure-report/
+allure-history/

@@ -12,7 +12,7 @@ Cypress.Commands.add('loginAs', (role: Role = 'user') => {
       cy.intercept('POST', LOGIN_API).as('login');
       header.openLoginPopup();
       authPopup.login(login, password);
-      cy.wait('@login').its('response.statusCode').should('eq', 200);
+      cy.wait('@login').its('response.statusCode').should('eq', 201);
       header.getLoginButton().should('not.exist');
     },
     {
